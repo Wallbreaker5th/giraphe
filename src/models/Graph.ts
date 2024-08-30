@@ -71,9 +71,9 @@ export class Graph {
     this.vertices.forEach(vertex => {
       const { x, y } = vertex.position;
       minX = Math.min(minX, x - (vertex.config.size || vertex.defaultConfig.size));
-      minY = Math.min(minY, y - (vertex.config.size || vertex.defaultConfig.size));
+      minY = Math.min(minY, - y - (vertex.config.size || vertex.defaultConfig.size));
       maxX = Math.max(maxX, x + (vertex.config.size || vertex.defaultConfig.size));
-      maxY = Math.max(maxY, y + (vertex.config.size || vertex.defaultConfig.size));
+      maxY = Math.max(maxY, - y + (vertex.config.size || vertex.defaultConfig.size));
     });
 
     // Add some padding
