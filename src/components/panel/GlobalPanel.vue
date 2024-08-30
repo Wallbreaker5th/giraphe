@@ -8,7 +8,7 @@
       <el-form-item :label="$t('panel.coordinateSystems')">
         <div style="display: flex; flex-direction: column; align-items: flex-start;">
           <div v-for="(system, index) in graph.coordinateSystems" :key="index">
-            <el-checkbox v-model="system.enabled" @change="updateCoordinateSystem(system)">
+            <el-checkbox v-model="system.enabled" @change="updateCoordinateSystem()">
               {{ system.system.name }}
             </el-checkbox>
           </div>
@@ -19,15 +19,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch, computed } from 'vue';
-import { Graph } from '@/models/Graph';
-import { CoordinateSystem } from '@/models/coordinateSystem/CoordinateSystem';
+import { defineComponent, ref, watch } from 'vue';
+import { Graph } from '../../models/Graph';
 
 export default defineComponent({
   name: 'GlobalPanel',
   props: {
     graph: {
-      type: Object as PropType<Graph>,
+      type: Object as () => Graph,
       required: true,
     },
   },
@@ -39,7 +38,7 @@ export default defineComponent({
       localGraph.value = newGraph;
     });
 
-    const updateCoordinateSystem = (system: CoordinateSystem) => {
+    const updateCoordinateSystem = () => {
       emit('update:graph', localGraph.value);
     };
 

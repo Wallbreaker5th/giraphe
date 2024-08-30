@@ -1,5 +1,4 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
 import ChooseLanguage from './components/ChooseLanguage.vue'
 import Canvas from './components/canvas/Canvas.vue'
 import { Graph } from './models/Graph'
@@ -27,7 +26,7 @@ export default {
         zoom: 1
       },
       selectedVertex: null as null | Vertex,
-      selectedEdge: null as null | Edge,
+      selectedEdge: null as null | Edge
     }
   },
   methods: {

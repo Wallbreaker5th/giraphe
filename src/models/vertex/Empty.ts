@@ -7,12 +7,13 @@ export class Empty extends BaseVertex {
     this.shapeName = 'empty';
   }
 
-  getCoordinateFromAngle(angle: number): XY {
+  getCoordinateFromAngle(_angle: number): XY {
     // Since Empty has no size, it always returns its position
+    // The angle parameter is not used but kept for interface compatibility
     return this.position;
   }
 
-  getSVGElement(selected: boolean): SVGElement {
+  getSVGElement(_selected: boolean): SVGElement {
     // Empty vertex has no visual representation
     const svgNS = "http://www.w3.org/2000/svg";
     return document.createElementNS(svgNS, "g");

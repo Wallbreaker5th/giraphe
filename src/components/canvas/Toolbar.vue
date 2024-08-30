@@ -25,16 +25,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-interface Tool {
-  name: string
-}
-
-interface Shape {
-  name: string
-}
 
 interface ToolbarModel {
   tool: string

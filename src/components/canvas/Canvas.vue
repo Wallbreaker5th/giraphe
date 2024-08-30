@@ -21,6 +21,7 @@ import Toolbar from './Toolbar.vue'
 import { Edge } from '../../models/egde/Edge'
 import { Empty } from '../../models/vertex/Empty'
 import { XY } from '../../models/coordinateSystem/XY'
+import { PropType } from 'vue'
 
 export default {
   name: 'Canvas',
@@ -42,10 +43,9 @@ export default {
       default: null,
     },
     selectedEdge: {
-      type: Object as () => Edge | null,
-      required: false,
+      type: Object as PropType<Edge | null>,
       default: null,
-    }
+    },
   },
   emits: ['update:graph', 'update:viewpoint', 'vertex-select', 'edge-select'],
   data() {

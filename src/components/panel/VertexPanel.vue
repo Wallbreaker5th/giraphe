@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
-import { Vertex, ShapeConfig } from '@/models/vertex/Vertex';
+import { Vertex, ShapeConfig } from '../../models/vertex/Vertex';
 import { darkColors, lightColors } from '../../models/ColorPanel';
 
 export default defineComponent({
@@ -82,7 +82,7 @@ export default defineComponent({
 
     const emitUpdate = () => {
       console.log('emit update')
-      emit('update:vertex', localVertex.value);
+      emit('update:vertex', { ...localVertex.value, changeShape: false });
     };
 
     const changeShape = () => {

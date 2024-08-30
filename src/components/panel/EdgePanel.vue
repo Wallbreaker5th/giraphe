@@ -62,9 +62,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
-import { Edge, EdgeConfig } from '@/models/egde/Edge';
+import { Edge, EdgeConfig } from '../../models/egde/Edge';
 import { darkColors, lightColors } from '../../models/ColorPanel';
-import { da } from 'element-plus/es/locales.mjs';
 
 export default defineComponent({
   name: 'EdgePanel',
@@ -86,14 +85,14 @@ export default defineComponent({
   },
   emits: ['update:edge'],
   setup(props, { emit }) {
-    const localEdge = ref<Edge>({ ...props.edge });
+    const localEdge = ref<Edge>(props.edge);
 
     watch(() => props.edge, (newEdge) => {
-      localEdge.value = { ...newEdge };
+      localEdge.value = newEdge;
     }, { deep: true });
 
     const emitUpdate = () => {
-      emit('update:edge', localEdge.value);
+      emit('update:edge', { ...localEdge.value });
     };
 
     return {

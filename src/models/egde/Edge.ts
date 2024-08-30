@@ -1,3 +1,4 @@
+import { XY } from '../coordinateSystem/XY';
 import { Vertex } from '../vertex/Vertex';
 
 export interface EdgeConfig {
@@ -72,7 +73,7 @@ export class Edge {
     return group;
   }
 
-  private createArrowhead(start: { x: number; y: number }, end: { x: number; y: number }): SVGElement {
+  createArrowhead(start: XY, end: XY): SVGElement {
     const angle = Math.atan2(end.y - start.y, end.x - start.x);
     const arrowSize = 10;
 
@@ -89,7 +90,7 @@ export class Edge {
     return arrowhead;
   }
 
-  private createLabel(start: { x: number; y: number }, end: { x: number; y: number }): SVGElement {
+  createLabel(start: XY, end: XY): SVGElement {
     const svgNS = "http://www.w3.org/2000/svg";
     const text = document.createElementNS(svgNS, "text");
     const midX = (start.x + end.x) / 2;

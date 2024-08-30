@@ -1,7 +1,7 @@
 <template>
   <el-tabs v-model="activeTab" class="full-height-tabs" tab-position="top">
     <el-tab-pane name="global" :label="$t('panel.globalSettings')" class="full-height-pane">
-      <GlobalPanel :graph="graph" @update:graph="updateGraph"/>
+      <GlobalPanel :graph="graph" @update:graph="updateGraph" />
     </el-tab-pane>
     <el-tab-pane name="default" :label="$t('panel.defaultStyles')" class="full-height-pane">
       <!-- Default style settings content will go here -->
@@ -16,12 +16,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
-import { Vertex } from '@/models/vertex/Vertex';
-import { Edge } from '@/models/egde/Edge';
+import { ref, watch } from 'vue';
+import { Vertex } from '../../models/vertex/Vertex';
+import { Edge } from '../../models/egde/Edge';
 import VertexPanel from './VertexPanel.vue';
 import EdgePanel from './EdgePanel.vue';
 import GlobalPanel from './GlobalPanel.vue';
+import { Graph } from '../../models/Graph';
 
 export default {
   name: 'Panel',
@@ -37,15 +38,15 @@ export default {
     },
     selectedEdge: {
       type: Object as () => Edge | null,
-      default: null
+      default: null,
     },
     graph: {
-      type: Object,
+      type: Object as () => Graph,
       required: true
     }
   },
   emits: ['update:graph', 'update:selectedVertex', 'update:selectedEdge'],
-  setup(props, { emit }) {
+  setup(props) {
     const activeTab = ref('global');
     watch([() => props.selectedVertex, () => props.selectedEdge], ([newVertex, newEdge]) => {
       if (newVertex) {
@@ -66,7 +67,7 @@ export default {
       console.log('updateGraph', updatedGraph);
       this.$emit('update:graph', updatedGraph);
     },
-    updateVertex(updatedVertex: Vertex) {
+    updateVertex(updatedVertex: Vertex & { changeShape?: boolean }) {
       if (this.selectedVertex) {
         if (updatedVertex.changeShape) {
           const newVertex = this.graph.changeVertexShape(this.selectedVertex, updatedVertex.shapeName);
