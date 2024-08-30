@@ -102,6 +102,8 @@ main {
 
 .lower-panel {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   padding: 0.5rem;
   border-top: 1px solid #ccc;

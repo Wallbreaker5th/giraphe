@@ -5,6 +5,7 @@ import { Circle } from './vertex/Circle';
 import { Square } from './vertex/Square';
 import { XY } from './coordinateSystem/XY';
 import { Edge, EdgeConfig, defaultEdgeConfig } from './egde/Edge';
+import Polar from './coordinateSystem/Polar';
 
 interface CoordinateSystemState {
   system: CoordinateSystem;
@@ -19,7 +20,12 @@ export class Graph {
   defaultEdgeConfig: EdgeConfig = defaultEdgeConfig;
 
   constructor() {
-    this.coordinateSystems = [{ system: new Cartesian("Basic Cartesian", 80, 80), enabled: true }];
+    this.coordinateSystems = [
+      { system: new Cartesian("Cartesian", 80, 80), enabled: true },
+      { system: new Polar("Polar", { x: 0, y: 0 }, 160), enabled: true },
+      { system: new Cartesian("Cartesian from selected vertex", 40, 40, "#bbb", { x: 0, y: 0 }, 2), enabled: false },
+      { system: new Polar("Polar from selected vertex", { x: 0, y: 0 }, 80, "#aaf", 2), enabled: false },
+    ];
     this.vertices = [];
     this.edges = [];
   }
@@ -98,6 +104,22 @@ export class Graph {
   toggleCoordinateSystem(index: number): void {
     if (index >= 0 && index < this.coordinateSystems.length) {
       this.coordinateSystems[index].enabled = !this.coordinateSystems[index].enabled;
+    }
+  }
+
+  toggleCoordinateSystemByVertex(vertex: Vertex | null): void {
+    if (vertex) {
+      this.coordinateSystems[2].enabled = true;
+      this.coordinateSystems[3].enabled = true;
+      this.coordinateSystems[2].system.origin = vertex.position;
+      this.coordinateSystems[3].system.origin = vertex.position;
+      this.coordinateSystems[0].system.color = "#eee";
+      this.coordinateSystems[1].system.color = "#eef";
+    } else {
+      this.coordinateSystems[2].enabled = false;
+      this.coordinateSystems[3].enabled = false;
+      this.coordinateSystems[0].system.color = "#ccc";
+      this.coordinateSystems[1].system.color = "#bbf";
     }
   }
 

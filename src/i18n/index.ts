@@ -9,7 +9,7 @@ const messages = {
       by: 'Giraphe by'
     },
     sidepanel: {
-      description: 'In select mode, click to add a node.',
+      description: 'This is a work in progress. Somehow usable.',
     },
     panel: {
       globalSettings: 'Global',
@@ -45,6 +45,7 @@ const messages = {
       labelTextFontSize: 'Font Size',
       labelTextStrokeColor: 'Stroke Color',
       labelTextStrokeWidth: 'Stroke Width',
+      coordinateSystems: 'Grids'
     },
     canvas: {
       toolbar: {
@@ -63,7 +64,7 @@ const messages = {
       by: 'Giraphe by'
     },
     sidepanel: {
-      description: '选择模式下点击添加节点。',
+      description: '目前还是个半成品，但已经能用了。',
     },
     panel: {
       globalSettings: '全局',
@@ -99,6 +100,7 @@ const messages = {
       labelTextFontSize: '字号',
       labelTextStrokeColor: '描边颜色',
       labelTextStrokeWidth: '描边宽度',
+      coordinateSystems: '网格'
     },
     canvas: {
       toolbar: {

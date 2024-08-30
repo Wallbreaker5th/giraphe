@@ -3,6 +3,9 @@ import { XY } from './XY';
 export interface CoordinateSystem {
   type: string;
   name: string;
+  color: string;
+  origin: XY;
+  priorityOffset: number;
 
   /**
    * Get a position from an array of coordinates

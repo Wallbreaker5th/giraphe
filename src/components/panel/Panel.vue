@@ -1,15 +1,15 @@
 <template>
-  <el-tabs v-model="activeTab">
-    <el-tab-pane name="global" :label="$t('panel.globalSettings')">
-      <GlobalPanel :graph="graph"/>
+  <el-tabs v-model="activeTab" class="full-height-tabs" tab-position="top">
+    <el-tab-pane name="global" :label="$t('panel.globalSettings')" class="full-height-pane">
+      <GlobalPanel :graph="graph" @update:graph="updateGraph"/>
     </el-tab-pane>
-    <el-tab-pane name="default" :label="$t('panel.defaultStyles')">
+    <el-tab-pane name="default" :label="$t('panel.defaultStyles')" class="full-height-pane">
       <!-- Default style settings content will go here -->
     </el-tab-pane>
-    <el-tab-pane v-if="selectedVertex" name="vertex" :label="$t('panel.vertexSettings')">
+    <el-tab-pane v-if="selectedVertex" name="vertex" :label="$t('panel.vertexSettings')" class="full-height-pane">
       <VertexPanel :vertex="selectedVertex" :defaultConfig="graph.defaultShapeConfig" @update:vertex="updateVertex" />
     </el-tab-pane>
-    <el-tab-pane v-if="selectedEdge" name="edge" :label="$t('panel.edgeSettings')">
+    <el-tab-pane v-if="selectedEdge" name="edge" :label="$t('panel.edgeSettings')" class="full-height-pane">
       <EdgePanel :edge="selectedEdge" :defaultConfig="graph.defaultEdgeConfig" @update:edge="updateEdge" />
     </el-tab-pane>
   </el-tabs>
@@ -62,6 +62,10 @@ export default {
     };
   },
   methods: {
+    updateGraph(updatedGraph: any) {
+      console.log('updateGraph', updatedGraph);
+      this.$emit('update:graph', updatedGraph);
+    },
     updateVertex(updatedVertex: Vertex) {
       if (this.selectedVertex) {
         if (updatedVertex.changeShape) {
@@ -87,5 +91,11 @@ export default {
 </script>
 
 <style scoped>
-/* Add any panel-specific styles here */
+.full-height-tabs {
+  height: 100%;
+}
+
+.full-height-pane {
+  height: 100%;
+}
 </style>

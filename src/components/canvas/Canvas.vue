@@ -78,6 +78,7 @@ export default {
     graph: {
       handler() {
         this.updateGraphSVG();
+        this.graph.toggleCoordinateSystemByVertex(this.selectedVertex);
       },
       deep: true
     },
@@ -95,11 +96,13 @@ export default {
     selectedVertex: {
       handler() {
         this.updateGraphSVG();
+        this.graph.toggleCoordinateSystemByVertex(this.selectedVertex);
       },
     },
     selectedEdge: {
       handler() {
         this.updateGraphSVG();
+        // this.graph.toggleCoordinateSystemByEdge(this.selectedEdge);
       },
     }
   },
