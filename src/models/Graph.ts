@@ -59,7 +59,7 @@ export class Graph {
   getSVG(): SVGElement {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    
+
     // Calculate the bounding box
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     this.vertices.forEach(vertex => {
@@ -69,29 +69,29 @@ export class Graph {
       maxX = Math.max(maxX, x + (vertex.config.size || vertex.defaultConfig.size));
       maxY = Math.max(maxY, y + (vertex.config.size || vertex.defaultConfig.size));
     });
-    
+
     // Add some padding
     const padding = 20;
     minX -= padding;
     minY -= padding;
     maxX += padding;
     maxY += padding;
-    
+
     // Set the viewBox and size attributes
     const width = maxX - minX;
     const height = maxY - minY;
     svg.setAttribute('viewBox', `${minX} ${minY} ${width} ${height}`);
     svg.setAttribute('width', width.toString());
     svg.setAttribute('height', height.toString());
-    
+
     // Add edges
     const edgeSVG = this.getEdgeSVG(null); // No edge selected
     edgeSVG.forEach(element => svg.appendChild(element));
-    
+
     // Add vertices
     const vertexSVG = this.getVertexSVG(null); // No vertex selected
     vertexSVG.forEach(element => svg.appendChild(element));
-    
+
     return svg;
   }
 
@@ -212,6 +212,16 @@ export class Graph {
         if (edge.start === vertex) edge.start = this.vertices[index];
         if (edge.end === vertex) edge.end = this.vertices[index];
       });
+    }
+  }
+
+  updateEdge(edge: Edge, updatedEdge: Edge): void {
+    const index = this.edges.indexOf(edge);
+    if (index !== -1) {
+      // Update the edge properties
+      this.edges[index].start = updatedEdge.start;
+      this.edges[index].end = updatedEdge.end;
+      this.edges[index].config = { ...updatedEdge.config };
     }
   }
 }

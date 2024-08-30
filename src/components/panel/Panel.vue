@@ -10,7 +10,7 @@
       <VertexPanel :vertex="selectedVertex" :defaultConfig="graph.defaultShapeConfig" @update:vertex="updateVertex" />
     </el-tab-pane>
     <el-tab-pane v-if="selectedEdge" name="edge" :label="$t('panel.edgeSettings')">
-      <!-- Edge settings content will go here when an edge is selected -->
+      <EdgePanel :edge="selectedEdge" :defaultConfig="graph.defaultEdgeConfig" @update:edge="updateEdge" />
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -20,12 +20,14 @@ import { defineComponent, ref, watch } from 'vue';
 import { Vertex } from '@/models/vertex/Vertex';
 import { Edge } from '@/models/egde/Edge';
 import VertexPanel from './VertexPanel.vue';
+import EdgePanel from './EdgePanel.vue';
 import GlobalPanel from './GlobalPanel.vue';
 
 export default {
   name: 'Panel',
   components: {
     VertexPanel,
+    EdgePanel,
     GlobalPanel
   },
   props: {
@@ -42,7 +44,7 @@ export default {
       required: true
     }
   },
-  emits: ['update:graph', 'update:selectedVertex'],
+  emits: ['update:graph', 'update:selectedVertex', 'update:selectedEdge'],
   setup(props, { emit }) {
     const activeTab = ref('global');
     watch([() => props.selectedVertex, () => props.selectedEdge], ([newVertex, newEdge]) => {
@@ -71,6 +73,13 @@ export default {
           this.graph.updateVertex(this.selectedVertex, updatedVertex);
         }
         this.$emit('update:graph', this.graph);
+      }
+    },
+    updateEdge(updatedEdge: Edge) {
+      if (this.selectedEdge) {
+        this.graph.updateEdge(this.selectedEdge, updatedEdge);
+        this.$emit('update:graph', this.graph);
+        this.$emit('update:selectedEdge', updatedEdge);
       }
     }
   }

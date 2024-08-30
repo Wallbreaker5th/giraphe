@@ -35,12 +35,23 @@ const messages = {
       square: 'Square',
       export: 'Export',
       exportSvg: 'Export SVG',
+      directed: 'Directed',
+      strokeStyle: 'Stroke Style',
+      solid: 'Solid',
+      dashed: 'Dashed',
+      label: 'Label',
+      labelText: 'Text',
+      labelTextColor: 'Color',
+      labelTextFontSize: 'Font Size',
+      labelTextStrokeColor: 'Stroke Color',
+      labelTextStrokeWidth: 'Stroke Width',
     },
     canvas: {
       toolbar: {
         select: 'Select',
         link: 'Add edge',
         delete: 'Delete',
+        directedEdge: 'Directed'
       }
     }
   },
@@ -78,12 +89,23 @@ const messages = {
       square: '方形',
       export: '导出',
       exportSvg: '导出SVG',
+      directed: '有向',
+      strokeStyle: '连线样式',
+      solid: '实线',
+      dashed: '虚线',
+      label: '标签',
+      labelText: '文本',
+      labelTextColor: '颜色',
+      labelTextFontSize: '字号',
+      labelTextStrokeColor: '描边颜色',
+      labelTextStrokeWidth: '描边宽度',
     },
     canvas: {
       toolbar: {
         select: '选择',
         link: '连边',
         delete: '删除',
+        directedEdge: '边有向'
       }
     }
   }

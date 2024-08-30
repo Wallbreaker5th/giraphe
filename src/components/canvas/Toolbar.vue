@@ -1,18 +1,25 @@
 <template>
   <div class="toolbar">
-    <div class="toolbar-left">
+    <div class="toolbar-section toolbar-left">
       <el-radio-group :model-value="modelValue.tool" @update:model-value="updateTool">
         <el-radio-button v-for="tool in tools" :key="tool.name" :value="tool.name">
           {{ t(`canvas.toolbar.${tool.name}`) }}
         </el-radio-button>
       </el-radio-group>
     </div>
-    <div class="toolbar-right">
+    <div class="toolbar-section toolbar-center">
       <el-radio-group :model-value="modelValue.shape" @update:model-value="updateShape">
         <el-radio-button v-for="shape in shapes" :key="shape.name" :value="shape.name">
           {{ shape.name }}
         </el-radio-button>
       </el-radio-group>
+    </div>
+    <div class="toolbar-section toolbar-right">
+      <el-switch
+        v-model="modelValue.directedEdge"
+        @change="updateDirectedEdge"
+        :active-text="t('canvas.toolbar.directedEdge')"
+      />
     </div>
   </div>
 </template>
@@ -32,6 +39,7 @@ interface Shape {
 interface ToolbarModel {
   tool: string
   shape: string
+  directedEdge: boolean
 }
 
 export default defineComponent({
@@ -62,6 +70,9 @@ export default defineComponent({
     },
     updateShape(newShape: string) {
       this.$emit('update:modelValue', { ...this.modelValue, shape: newShape })
+    },
+    updateDirectedEdge(newValue: boolean) {
+      this.$emit('update:modelValue', { ...this.modelValue, directedEdge: newValue })
     }
   },
   computed: {
@@ -79,16 +90,30 @@ export default defineComponent({
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
   background-color: white;
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 1200px;
 }
 
-.toolbar-left,
-.toolbar-right {
+.toolbar-section {
   display: flex;
   align-items: center;
+  flex: 1;
+}
+
+.toolbar-left {
+  justify-content: flex-start;
+}
+
+.toolbar-center {
+  justify-content: center;
+}
+
+.toolbar-right {
+  justify-content: flex-end;
 }
 </style>

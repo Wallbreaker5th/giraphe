@@ -13,10 +13,22 @@
         <el-input-number v-model="localVertex.config.size" :min="1" :max="100" :step="1" @change="emitUpdate" :placeholder="defaultConfig.size.toString()" />
       </el-form-item>
       <el-form-item :label="$t('panel.fillColor')">
-        <el-color-picker v-model="localVertex.config.fillColor" @change="emitUpdate" :placeholder="defaultConfig.fillColor" />
+        <el-color-picker 
+          v-model="localVertex.config.fillColor" 
+          @change="emitUpdate" 
+          :placeholder="defaultConfig.fillColor"
+          :predefine="lightColors"
+          show-alpha
+        />
       </el-form-item>
       <el-form-item :label="$t('panel.strokeColor')">
-        <el-color-picker v-model="localVertex.config.strokeColor" @change="emitUpdate" :placeholder="defaultConfig.strokeColor" />
+        <el-color-picker 
+          v-model="localVertex.config.strokeColor" 
+          @change="emitUpdate" 
+          :placeholder="defaultConfig.strokeColor"
+          :predefine="darkColors"
+          show-alpha
+        />
       </el-form-item>
       <el-form-item :label="$t('panel.strokeWidth')">
         <el-input-number v-model="localVertex.config.strokeWidth" :min="0" :max="10" :step="0.5" @change="emitUpdate" :placeholder="defaultConfig.strokeWidth.toString()" />
@@ -40,6 +52,7 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { Vertex, ShapeConfig } from '@/models/vertex/Vertex';
+import { darkColors, lightColors } from '../../models/ColorPanel';
 
 export default defineComponent({
   name: 'VertexPanel',
@@ -52,6 +65,12 @@ export default defineComponent({
       type: Object as PropType<ShapeConfig>,
       required: true,
     },
+  },
+  data() {
+    return {
+      darkColors: darkColors,
+      lightColors: lightColors,
+    };
   },
   emits: ['update:vertex'],
   setup(props, { emit }) {

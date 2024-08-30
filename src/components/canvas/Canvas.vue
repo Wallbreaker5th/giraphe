@@ -61,7 +61,7 @@ export default {
       edgeSVGElements: [] as SVGElement[],
       draggedVertex: null as Vertex | null,
       edgeStartVertex: null as Vertex | null,
-      toolbarModel: { tool: 'select', shape: 'circle' },
+      toolbarModel: { tool: 'select', shape: 'circle', directedEdge: false },
       snapThreshold: 10,
       clickedEdge: null as Edge | null,
     }
@@ -191,7 +191,7 @@ export default {
         };
         console.log('End position:', endPosition);
         const emptyEndVertex = new Empty(endPosition);
-        const pendingEdge = new Edge(this.edgeStartVertex, emptyEndVertex, {}, this.graph.defaultEdgeConfig);
+        const pendingEdge = new Edge(this.edgeStartVertex, emptyEndVertex, { directed: this.toolbarModel.directedEdge }, this.graph.defaultEdgeConfig);
         const pendingEdgeGroup = this.$refs.pendingEdgeSVGRef as SVGElement
         if (pendingEdgeGroup) {
           pendingEdgeGroup.innerHTML = '';
@@ -315,7 +315,7 @@ export default {
         if (!this.edgeStartVertex) {
           this.edgeStartVertex = vertex;
         } else {
-          this.graph.addEdge(this.edgeStartVertex, vertex);
+          this.graph.addEdge(this.edgeStartVertex, vertex, { directed: this.toolbarModel.directedEdge });
           this.edgeStartVertex = null;
           this.$emit('update:graph', this.graph);
         }
@@ -323,7 +323,6 @@ export default {
         this.graph.removeVertex(vertex);
         this.$emit('update:graph', this.graph);
       }
-      console.log('Vertex clicked:', vertex);
     },
     handleEdgeMouseDown(event: MouseEvent, edge: Edge) {
       event.stopPropagation();
@@ -341,7 +340,6 @@ export default {
       this.hasDragged = false;
     },
     handleEdgeClick(edge: Edge) {
-      console.log("Edge clicked:", edge)
       if (this.toolbarModel.tool === 'select') {
         if (this.selectedEdge === edge) {
           this.$emit('edge-select', null);

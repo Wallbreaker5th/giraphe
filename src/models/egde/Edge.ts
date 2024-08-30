@@ -2,10 +2,26 @@ import { Vertex } from '../vertex/Vertex';
 
 export interface EdgeConfig {
   directed: boolean;
+  strokeColor: string;
+  strokeWidth: number;
+  strokeStyle: string;
+  labelText: string;
+  labelTextColor: string;
+  labelTextFontSize: number;
+  labelTextStrokeColor: string;
+  labelTextStrokeWidth: number;
 }
 
 export const defaultEdgeConfig: EdgeConfig = {
   directed: false,
+  strokeColor: 'black',
+  strokeWidth: 2,
+  strokeStyle: 'solid',
+  labelText: '',
+  labelTextColor: 'black',
+  labelTextFontSize: 16,
+  labelTextStrokeColor: 'white',
+  labelTextStrokeWidth: 3,
 };
 
 export class Edge {
@@ -22,31 +38,38 @@ export class Edge {
   }
 
   getSVGElement(selected: boolean): SVGElement {
-    const startAngle = Math.atan2(this.end.position.y - this.start.position.y, 
-                                  this.end.position.x - this.start.position.x);
+    const startAngle = Math.atan2(this.end.position.y - this.start.position.y,
+      this.end.position.x - this.start.position.x);
     const endAngle = startAngle + Math.PI;
 
     const startPos = this.start.getCoordinateFromAngle(startAngle);
     const endPos = this.end.getCoordinateFromAngle(endAngle);
 
     const svgNS = "http://www.w3.org/2000/svg";
+    const group = document.createElementNS(svgNS, "g");
+
     const line = document.createElementNS(svgNS, "line");
     line.setAttribute("x1", startPos.x.toString());
     line.setAttribute("y1", (-startPos.y).toString());
     line.setAttribute("x2", endPos.x.toString());
     line.setAttribute("y2", (-endPos.y).toString());
-    line.setAttribute("stroke", "black");
-    line.setAttribute("stroke-width", (2 + (selected ? 2 : 0)).toString());
+    line.setAttribute("stroke", this.config.strokeColor || this.defaultConfig.strokeColor);
+    line.setAttribute("stroke-width", ((this.config.strokeWidth || this.defaultConfig.strokeWidth) + (selected ? 2 : 0)).toString());
+    line.setAttribute("stroke-dasharray", this.config.strokeStyle === 'dashed' ? "5,5" : "");
+
+    group.appendChild(line);
 
     if (this.config.directed || this.defaultConfig.directed) {
       const arrowhead = this.createArrowhead(startPos, endPos);
-      const group = document.createElementNS(svgNS, "g");
-      group.appendChild(line);
       group.appendChild(arrowhead);
-      return group;
     }
 
-    return line;
+    if (this.config.labelText || this.defaultConfig.labelText) {
+      const label = this.createLabel(startPos, endPos);
+      group.appendChild(label);
+    }
+
+    return group;
   }
 
   private createArrowhead(start: { x: number; y: number }, end: { x: number; y: number }): SVGElement {
@@ -61,8 +84,28 @@ export class Edge {
     const svgNS = "http://www.w3.org/2000/svg";
     const arrowhead = document.createElementNS(svgNS, "polygon");
     arrowhead.setAttribute("points", `${end.x},${-end.y} ${x1},${-y1} ${x2},${-y2}`);
-    arrowhead.setAttribute("fill", "black");
+    arrowhead.setAttribute("fill", this.config.strokeColor || this.defaultConfig.strokeColor);
 
     return arrowhead;
+  }
+
+  private createLabel(start: { x: number; y: number }, end: { x: number; y: number }): SVGElement {
+    const svgNS = "http://www.w3.org/2000/svg";
+    const text = document.createElementNS(svgNS, "text");
+    const midX = (start.x + end.x) / 2;
+    const midY = (start.y + end.y) / 2;
+
+    text.setAttribute("x", midX.toString());
+    text.setAttribute("y", (-midY).toString());
+    text.setAttribute("text-anchor", "middle");
+    text.setAttribute("dominant-baseline", "middle");
+    text.setAttribute("font-size", (this.config.labelTextFontSize || this.defaultConfig.labelTextFontSize).toString());
+    text.setAttribute("fill", this.config.labelTextColor || this.defaultConfig.labelTextColor);
+    text.setAttribute("stroke", this.config.labelTextStrokeColor || this.defaultConfig.labelTextStrokeColor);
+    text.setAttribute("stroke-width", (this.config.labelTextStrokeWidth || this.defaultConfig.labelTextStrokeWidth).toString());
+    text.setAttribute("paint-order", "stroke");
+    text.textContent = this.config.labelText || this.defaultConfig.labelText;
+
+    return text;
   }
 }
