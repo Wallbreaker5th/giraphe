@@ -64,10 +64,10 @@ export class Graph {
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     this.vertices.forEach(vertex => {
       const { x, y } = vertex.position;
-      minX = Math.min(minX, x);
-      minY = Math.min(minY, y);
-      maxX = Math.max(maxX, x);
-      maxY = Math.max(maxY, y);
+      minX = Math.min(minX, x - (vertex.config.size || vertex.defaultConfig.size));
+      minY = Math.min(minY, y - (vertex.config.size || vertex.defaultConfig.size));
+      maxX = Math.max(maxX, x + (vertex.config.size || vertex.defaultConfig.size));
+      maxY = Math.max(maxY, y + (vertex.config.size || vertex.defaultConfig.size));
     });
     
     // Add some padding
