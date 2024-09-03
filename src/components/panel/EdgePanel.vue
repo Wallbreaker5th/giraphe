@@ -24,6 +24,13 @@
           <el-option value="dashed" :label="$t('panel.dashed')"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item :label="$t('panel.offsetAngle')">
+        <el-input-number v-model="localEdge.config.offsetAngle" :min="-175" :max="175" :step="5" @change="emitUpdate"
+          :placeholder="defaultConfig.offsetAngle.toString()" />
+      </el-form-item>
+      <el-form-item :label="$t('panel.curve')">
+        <el-switch v-model="localEdge.config.curve" @change="emitUpdate" />
+      </el-form-item>
       
       <el-divider content-position="left">{{ $t('panel.label') }}</el-divider>
       

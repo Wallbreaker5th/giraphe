@@ -97,6 +97,7 @@ export default {
 }
 
 .full-height-pane {
+  overflow: scroll;
   height: 100%;
 }
 </style>

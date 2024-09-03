@@ -45,7 +45,9 @@ const messages = {
       labelTextFontSize: 'Font Size',
       labelTextStrokeColor: 'Stroke Color',
       labelTextStrokeWidth: 'Stroke Width',
-      coordinateSystems: 'Grids'
+      coordinateSystems: 'Grids',
+      offsetAngle: 'Offset angle',
+      curve: 'Curve',
     },
     canvas: {
       toolbar: {
@@ -100,7 +102,9 @@ const messages = {
       labelTextFontSize: '字号',
       labelTextStrokeColor: '描边颜色',
       labelTextStrokeWidth: '描边宽度',
-      coordinateSystems: '网格'
+      coordinateSystems: '网格',
+      offsetAngle: '偏移角度',
+      curve: '曲边'
     },
     canvas: {
       toolbar: {

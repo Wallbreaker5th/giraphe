@@ -67,9 +67,6 @@ export default defineComponent({
 <style scoped>
 .global-panel {
   padding: 0px 16px;
-  overflow-x: scroll;
-  overflow-y: scroll;
-  height: 100%;
 }
 
 h3 {
