@@ -159,6 +159,7 @@ export class Edge {
     text.setAttribute("fill", this.config.labelTextColor || this.defaultConfig.labelTextColor);
     text.setAttribute("stroke", this.config.labelTextStrokeColor || this.defaultConfig.labelTextStrokeColor);
     text.setAttribute("stroke-width", (this.config.labelTextStrokeWidth || this.defaultConfig.labelTextStrokeWidth).toString());
+    text.setAttribute("stroke-linejoin", "round");
     text.setAttribute("paint-order", "stroke");
     text.textContent = this.config.labelText || this.defaultConfig.labelText;
 
