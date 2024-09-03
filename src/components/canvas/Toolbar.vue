@@ -14,12 +14,17 @@
         </el-radio-button>
       </el-radio-group>
     </div>
-    <div class="toolbar-section toolbar-right">
+    <div class="toolbar-section toolbar-center">
       <el-switch
         v-model="modelValue.directedEdge"
         @change="updateDirectedEdge"
         :active-text="t('canvas.toolbar.directedEdge')"
       />
+    </div>
+    <div class="toolbar-section toolbar-right">
+      <el-button @click="cleanGraph" type="danger" :title="t('canvas.toolbar.cleanGraph')">
+        <el-icon><Delete /></el-icon>
+      </el-button>
     </div>
   </div>
 </template>
@@ -27,6 +32,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Delete } from '@element-plus/icons-vue'
 import ShapeIcon from '../ShapeIcon.vue'
 
 interface ToolbarModel {
@@ -45,8 +51,9 @@ export default defineComponent({
   },
   components: {
     ShapeIcon,
+    Delete
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'cleanGraph'],
   data() {
     return {
       tools: [
@@ -69,6 +76,9 @@ export default defineComponent({
     },
     updateDirectedEdge(newValue: boolean) {
       this.$emit('update:modelValue', { ...this.modelValue, directedEdge: newValue })
+    },
+    cleanGraph() {
+      this.$emit('cleanGraph')
     }
   },
   computed: {

@@ -50,14 +50,18 @@ const messages = {
       curve: 'Curve',
       saveLoad: 'Save/Load',
       saveGraph: 'Save Graph',
-      loadGraph: 'Load Graph'
+      loadGraph: 'Load Graph',
+      defaultStyleSettingsFull: 'Default Style Settings',
+      vertexDefaults: 'Vertex Defaults',
+      edgeDefaults: 'Edge Defaults',
     },
     canvas: {
       toolbar: {
         select: 'Select',
         link: 'Add edge',
         delete: 'Delete',
-        directedEdge: 'Directed'
+        directedEdge: 'Directed',
+        cleanGraph: 'Clear the whole graph'
       }
     }
   },
@@ -110,14 +114,18 @@ const messages = {
       curve: '曲边',
       saveLoad: '保存/加载',
       saveGraph: '保存',
-      loadGraph: '加载'
+      loadGraph: '加载',
+      defaultStyleSettingsFull: '默认样式设置',
+      vertexDefaults: '节点默认值',
+      edgeDefaults: '边默认值',
     },
     canvas: {
       toolbar: {
         select: '选择',
         link: '连边',
         delete: '删除',
-        directedEdge: '边有向'
+        directedEdge: '边有向',
+        cleanGraph: '清空全图'
       }
     }
   }

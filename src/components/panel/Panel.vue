@@ -4,7 +4,12 @@
       <GlobalPanel :graph="graph" @update:graph="updateGraph" />
     </el-tab-pane>
     <el-tab-pane name="default" :label="$t('panel.defaultStyles')" class="full-height-pane">
-      <!-- Default style settings content will go here -->
+      <StylePanel 
+        :defaultShapeConfig="graph.defaultShapeConfig" 
+        :defaultEdgeConfig="graph.defaultEdgeConfig" 
+        @update:defaultShapeConfig="updateDefaultShapeConfig"
+        @update:defaultEdgeConfig="updateDefaultEdgeConfig"
+      />
     </el-tab-pane>
     <el-tab-pane v-if="selectedVertex" name="vertex" :label="$t('panel.vertexSettings')" class="full-height-pane">
       <VertexPanel :vertex="selectedVertex" :defaultConfig="graph.defaultShapeConfig" @update:vertex="updateVertex" />
@@ -22,6 +27,7 @@ import { Edge } from '../../models/egde/Edge';
 import VertexPanel from './VertexPanel.vue';
 import EdgePanel from './EdgePanel.vue';
 import GlobalPanel from './GlobalPanel.vue';
+import StylePanel from './StylePanel.vue';
 import { Graph } from '../../models/Graph';
 
 export default {
@@ -29,7 +35,8 @@ export default {
   components: {
     VertexPanel,
     EdgePanel,
-    GlobalPanel
+    GlobalPanel,
+    StylePanel
   },
   props: {
     selectedVertex: {
@@ -86,6 +93,14 @@ export default {
         this.$emit('update:graph', this.graph);
         this.$emit('update:selectedEdge', updatedEdge);
       }
+    },
+    updateDefaultShapeConfig(updatedConfig: any) {
+      Object.assign(this.graph.defaultShapeConfig, updatedConfig);
+      this.$emit('update:graph', this.graph);
+    },
+    updateDefaultEdgeConfig(updatedConfig: any) {
+      Object.assign(this.graph.defaultEdgeConfig, updatedConfig);
+      this.$emit('update:graph', this.graph);
     }
   }
 };

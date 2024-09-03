@@ -17,13 +17,13 @@ export interface EdgeConfig {
 
 export const defaultEdgeConfig: EdgeConfig = {
   directed: false,
-  strokeColor: 'black',
+  strokeColor: '#000000',
   strokeWidth: 2,
   strokeStyle: 'solid',
   labelText: '',
-  labelTextColor: 'black',
+  labelTextColor: '#000000',
   labelTextFontSize: 16,
-  labelTextStrokeColor: 'white',
+  labelTextStrokeColor: '#ffffff',
   labelTextStrokeWidth: 3,
   offsetAngle: 0,
   curve: true

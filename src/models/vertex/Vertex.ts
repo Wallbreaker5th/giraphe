@@ -11,8 +11,8 @@ export interface ShapeConfig {
 
 export const defaultShapeConfig: ShapeConfig = {
   size: 20,
-  fillColor: 'white',
-  strokeColor: 'black',
+  fillColor: '#ffffff',
+  strokeColor: '#000000',
   strokeWidth: 2,
   textSize: 20,
   widthScale: 1

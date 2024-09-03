@@ -1,6 +1,6 @@
 <template>
   <div class="canvas-container">
-    <Toolbar class="toolbar" v-model="toolbarModel" />
+    <Toolbar class="toolbar" v-model="toolbarModel" @clean-graph="cleanGraph"/>
     <svg ref="svgRef" :width="width" :height="height" @mousemove="handleMouseMove" @wheel="handleWheel"
       @mousedown="handleMouseDown" @mouseup="handleMouseUp" @mouseleave="handleMouseLeave">
       <g
@@ -355,6 +355,9 @@ export default {
       }
       console.log('Edge clicked:', edge);
     },
+    cleanGraph() {
+      this.$emit('update:graph', new Graph());
+    }
   },
 }
 </script>

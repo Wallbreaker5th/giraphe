@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 export default defineComponent({
@@ -11,7 +11,15 @@ export default defineComponent({
 
     const changeLanguage = (lang: string) => {
       locale.value = lang
+      localStorage.setItem('language', lang)
     }
+
+    onMounted(() => {
+      const savedLanguage = localStorage.getItem('language')
+      if (savedLanguage) {
+        locale.value = savedLanguage
+      }
+    })
 
     return {
       changeLanguage
