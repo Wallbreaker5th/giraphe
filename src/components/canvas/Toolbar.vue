@@ -22,9 +22,18 @@
       />
     </div>
     <div class="toolbar-section toolbar-right">
-      <el-button @click="cleanGraph" type="danger" :title="t('canvas.toolbar.cleanGraph')">
-        <el-icon><Delete /></el-icon>
-      </el-button>
+      <el-popconfirm
+        :title="t('canvas.toolbar.confirmClear')"
+        @confirm="cleanGraph"
+        confirm-button-text="OK"
+        cancel-button-text="Cancel"
+      >
+        <template #reference>
+          <el-button type="danger" :title="t('canvas.toolbar.cleanGraph')">
+            <el-icon><Delete /></el-icon>
+          </el-button>
+        </template>
+      </el-popconfirm>
     </div>
   </div>
 </template>

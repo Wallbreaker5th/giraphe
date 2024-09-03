@@ -61,7 +61,8 @@ const messages = {
         link: 'Add edge',
         delete: 'Delete',
         directedEdge: 'Directed',
-        cleanGraph: 'Clear the whole graph'
+        cleanGraph: 'Clear the whole graph',
+        confirmClear: 'Clear the graph? All the data will be lost.'
       }
     }
   },
@@ -125,7 +126,8 @@ const messages = {
         link: '连边',
         delete: '删除',
         directedEdge: '边有向',
-        cleanGraph: '清空全图'
+        cleanGraph: '清空全图',
+        confirmClear: '清空全图？所有数据将会丢失。'
       }
     }
   }
