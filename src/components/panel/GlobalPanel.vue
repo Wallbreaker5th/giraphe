@@ -2,6 +2,10 @@
   <div class="global-panel">
     <h3>{{ $t('panel.globalSettingsFull') }}</h3>
     <el-form label-position="left" label-width="60px">
+      <el-form-item :label="$t('panel.saveLoad')" label-position="top">
+        <el-button @click="saveGraph">{{ $t('panel.saveGraph') }}</el-button>
+        <el-button @click="loadGraph">{{ $t('panel.loadGraph') }}</el-button>
+      </el-form-item>
       <el-form-item :label="$t('panel.export')">
         <el-button @click="exportSvg">{{ $t('panel.exportSvg') }}</el-button>
       </el-form-item>
@@ -55,10 +59,43 @@ export default defineComponent({
       document.body.removeChild(link);
     };
 
+    const saveGraph = () => {
+      const jsonString = localGraph.value.toJSON();
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'graph.json';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
+    const loadGraph = () => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = (event) => {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const json = e.target?.result as string;
+            const newGraph = Graph.fromJSON(json);
+            emit('update:graph', newGraph);
+          };
+          reader.readAsText(file);
+        }
+      };
+      input.click();
+    };
+
     return {
       localGraph,
       updateCoordinateSystem,
       exportSvg,
+      saveGraph,
+      loadGraph,
     };
   },
 });

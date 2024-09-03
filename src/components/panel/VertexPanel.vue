@@ -41,8 +41,14 @@
       </el-form-item>
       <el-form-item :label="$t('panel.shape')">
         <el-select v-model="localVertex.shapeName" @change="changeShape">
-          <el-option value="circle" :label="$t('panel.circle')"></el-option>
-          <el-option value="square" :label="$t('panel.square')"></el-option>
+          <el-option value="circle" :label="$t('panel.circle')">
+            <ShapeIcon shape="circle" />
+            {{ $t('panel.circle') }}
+          </el-option>
+          <el-option value="square" :label="$t('panel.square')">
+            <ShapeIcon shape="square" />
+            {{ $t('panel.square') }}
+          </el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -53,6 +59,7 @@
 import { defineComponent, PropType, ref, watch } from 'vue';
 import { Vertex, ShapeConfig } from '../../models/vertex/Vertex';
 import { darkColors, lightColors } from '../../models/ColorPanel';
+import ShapeIcon from '../ShapeIcon.vue';
 
 export default defineComponent({
   name: 'VertexPanel',
@@ -65,6 +72,9 @@ export default defineComponent({
       type: Object as PropType<ShapeConfig>,
       required: true,
     },
+  },
+  components: {
+    ShapeIcon,
   },
   data() {
     return {

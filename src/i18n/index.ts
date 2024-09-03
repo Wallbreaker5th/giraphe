@@ -48,6 +48,9 @@ const messages = {
       coordinateSystems: 'Grids',
       offsetAngle: 'Offset angle',
       curve: 'Curve',
+      saveLoad: 'Save/Load',
+      saveGraph: 'Save Graph',
+      loadGraph: 'Load Graph'
     },
     canvas: {
       toolbar: {
@@ -104,7 +107,10 @@ const messages = {
       labelTextStrokeWidth: '描边宽度',
       coordinateSystems: '网格',
       offsetAngle: '偏移角度',
-      curve: '曲边'
+      curve: '曲边',
+      saveLoad: '保存/加载',
+      saveGraph: '保存',
+      loadGraph: '加载'
     },
     canvas: {
       toolbar: {

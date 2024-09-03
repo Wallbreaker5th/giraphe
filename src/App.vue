@@ -13,10 +13,24 @@ export default {
     Panel
   },
   data() {
-    let graph = new Graph();
-    graph.addVertexByShape("circle", { x: 0, y: 0 }, "1", {});
-    graph.addVertexByShape("circle", { x: 160, y: 0 }, "2", {});
-    graph.addEdge(graph.vertices[0], graph.vertices[1]);
+    let graph;
+    const savedGraph = localStorage.getItem('savedGraph');
+    if (savedGraph) {
+      try {
+        graph = Graph.fromJSON(savedGraph);
+      } catch (error) {
+        console.error("Failed to load saved graph:", error);
+        graph = new Graph();
+        graph.addVertexByShape("circle", { x: 0, y: 0 }, "1", {});
+        graph.addVertexByShape("circle", { x: 160, y: 0 }, "2", {});
+        graph.addEdge(graph.vertices[0], graph.vertices[1]);
+      }
+    } else {
+      graph = new Graph();
+      graph.addVertexByShape("circle", { x: 0, y: 0 }, "1", {});
+      graph.addVertexByShape("circle", { x: 160, y: 0 }, "2", {});
+      graph.addEdge(graph.vertices[0], graph.vertices[1]);
+    }
     return {
       selectedElement: null,
       graph: graph,
@@ -30,6 +44,10 @@ export default {
     }
   },
   methods: {
+    updateGraph(newGraph: Graph) {
+      this.graph = newGraph;
+      localStorage.setItem('savedGraph', this.graph.toJSON());
+    }
   }
 }
 </script>
@@ -43,7 +61,7 @@ export default {
     <main>
       <div class="canvas-container">
         <Canvas :graph="graph" :viewpoint="viewpoint" :selectedVertex="selectedVertex" :selectedEdge="selectedEdge"
-          @update:graph="graph = $event" @update:viewpoint="viewpoint = $event"
+          @update:graph="updateGraph($event)" @update:viewpoint="viewpoint = $event"
           @vertex-select="selectedVertex = $event; selectedEdge = null"
           @edge-select="selectedEdge = $event; selectedVertex = null" />
       </div>
@@ -53,7 +71,7 @@ export default {
         </div>
         <div class="lower-panel">
           <Panel :selectedVertex="selectedVertex" :selectedEdge="selectedEdge" :graph="graph"
-            @update:graph="graph = $event" @update:selected-vertex="selectedVertex = $event" />
+            @update:graph="updateGraph($event)" @update:selected-vertex="selectedVertex = $event" />
         </div>
       </aside>
     </main>

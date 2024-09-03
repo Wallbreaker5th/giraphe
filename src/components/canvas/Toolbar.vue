@@ -10,7 +10,7 @@
     <div class="toolbar-section toolbar-center">
       <el-radio-group :model-value="modelValue.shape" @update:model-value="updateShape">
         <el-radio-button v-for="shape in shapes" :key="shape.name" :value="shape.name">
-          {{ shape.name }}
+          <ShapeIcon :shape="shape.name" />
         </el-radio-button>
       </el-radio-group>
     </div>
@@ -27,6 +27,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ShapeIcon from '../ShapeIcon.vue'
 
 interface ToolbarModel {
   tool: string
@@ -41,6 +42,9 @@ export default defineComponent({
       type: Object as PropType<ToolbarModel>,
       required: true
     }
+  },
+  components: {
+    ShapeIcon,
   },
   emits: ['update:modelValue'],
   data() {

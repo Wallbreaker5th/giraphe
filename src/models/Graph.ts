@@ -246,4 +246,64 @@ export class Graph {
       this.edges[index].config = { ...updatedEdge.config };
     }
   }
+  
+  toJSON(): string {
+    return JSON.stringify({
+      vertices: this.vertices.map((v, index) => ({
+        id: index,
+        position: v.position,
+        text: v.text,
+        config: v.config,
+        shapeName: v.shapeName
+      })),
+      edges: this.edges.map(e => ({
+        startId: this.vertices.indexOf(e.start),
+        endId: this.vertices.indexOf(e.end),
+        config: e.config
+      })),
+      defaultShapeConfig: this.defaultShapeConfig,
+      defaultEdgeConfig: this.defaultEdgeConfig,
+    });
+  }
+
+  static fromJSON(json: string): Graph {
+    const data = JSON.parse(json);
+    const graph = new Graph();
+
+    graph.defaultShapeConfig = data.defaultShapeConfig;
+    graph.defaultEdgeConfig = data.defaultEdgeConfig;
+    
+    graph.vertices = data.vertices.map((v: any) => {
+      let vertex: Vertex;
+      switch (v.shapeName) {
+        case 'circle':
+          vertex = new Circle(v.position, v.text, v.config, graph.defaultShapeConfig);
+          break;
+        case 'square':
+          vertex = new Square(v.position, v.text, v.config, graph.defaultShapeConfig);
+          break;
+        default:
+          throw new Error(`Unsupported shape: ${v.shapeName}`);
+      }
+      return vertex;
+    });
+
+    graph.edges = data.edges.map((e: any) => {
+      const start = graph.vertices[e.startId];
+      const end = graph.vertices[e.endId];
+      if (!start || !end) {
+        throw new Error(`Invalid edge: start or end vertex not found`);
+      }
+      return new Edge(start, end, e.config, graph.defaultEdgeConfig);
+    });
+
+    graph.coordinateSystems = [
+      { system: new Cartesian("Cartesian", 80, 80), enabled: true },
+      { system: new Polar("Polar", { x: 0, y: 0 }, 160), enabled: true },
+      { system: new Cartesian("Cartesian from selected vertex", 40, 40, "#bbb", { x: 0, y: 0 }, 2), enabled: false },
+      { system: new Polar("Polar from selected vertex", { x: 0, y: 0 }, 80, "#aaf", 2), enabled: false },
+    ];
+    
+    return graph;
+  }
 }
