@@ -68,7 +68,7 @@ export class Edge {
       line.setAttribute("y2", (-endPosShrunk.y).toString());
       line.setAttribute("stroke", this.config.strokeColor || this.defaultConfig.strokeColor);
       line.setAttribute("stroke-width", ((this.config.strokeWidth || this.defaultConfig.strokeWidth) + (selected ? 2 : 0)).toString());
-      line.setAttribute("stroke-dasharray", this.config.strokeStyle === 'dashed' ? "5,5" : "");
+      line.setAttribute("stroke-dasharray", (this.config.strokeStyle || this.defaultConfig.strokeStyle) === 'dashed' ? "5,5" : "");
       
       group.appendChild(line);
     } else {
