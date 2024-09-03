@@ -43,11 +43,23 @@ export class Edge {
   }
 
   getSVGElement(selected: boolean): SVGElement {
-    const offsetAngle = (this.config.offsetAngle || this.defaultConfig.offsetAngle) / 180 * Math.PI;
-    const realAngle = Math.atan2(this.end.position.y - this.start.position.y,
-      this.end.position.x - this.start.position.x)
-    const startAngle = realAngle + offsetAngle;
-    const endAngle = realAngle + Math.PI - offsetAngle;
+    let offsetAngle;
+    let realAngle, startAngle, endAngle;
+
+    if (this.start === this.end) {
+      // Self-loop
+      offsetAngle = - 3 / 4 * Math.PI;
+      realAngle = 0;
+      const configOffsetAngle = (this.config.offsetAngle || this.defaultConfig.offsetAngle) / 180 * Math.PI;
+      startAngle = configOffsetAngle - Math.PI / 4;
+      endAngle = configOffsetAngle + Math.PI / 4;
+    } else {
+      offsetAngle = (this.config.offsetAngle || this.defaultConfig.offsetAngle) / 180 * Math.PI
+      realAngle = Math.atan2(this.end.position.y - this.start.position.y,
+        this.end.position.x - this.start.position.x);
+      startAngle = realAngle + offsetAngle;
+      endAngle = realAngle + Math.PI - offsetAngle;
+    }
 
     const startPos = this.start.getCoordinateFromAngle(startAngle);
     const endPos = this.end.getCoordinateFromAngle(endAngle);
@@ -55,10 +67,10 @@ export class Edge {
     const svgNS = "http://www.w3.org/2000/svg";
     const group = document.createElementNS(svgNS, "g");
 
-    if (!this.config.curve || offsetAngle === 0) {
+    if ((!this.config.curve || offsetAngle === 0) && this.start !== this.end) {
       const endPosShrunk = (
-        this.config.directed || this.defaultConfig.directed ? 
-          { x: endPos.x - Math.cos(realAngle) * 4.9 * Math.sqrt(3), y: endPos.y - Math.sin(realAngle) * 4.9 * Math.sqrt(3) } : 
+        this.config.directed || this.defaultConfig.directed ?
+          { x: endPos.x - Math.cos(realAngle) * 4.9 * Math.sqrt(3), y: endPos.y - Math.sin(realAngle) * 4.9 * Math.sqrt(3) } :
           endPos
       );
       const line = document.createElementNS(svgNS, "line");
@@ -69,8 +81,13 @@ export class Edge {
       line.setAttribute("stroke", this.config.strokeColor || this.defaultConfig.strokeColor);
       line.setAttribute("stroke-width", ((this.config.strokeWidth || this.defaultConfig.strokeWidth) + (selected ? 2 : 0)).toString());
       line.setAttribute("stroke-dasharray", (this.config.strokeStyle || this.defaultConfig.strokeStyle) === 'dashed' ? "5,5" : "");
-      
+
       group.appendChild(line);
+
+      if (this.config.directed || this.defaultConfig.directed) {
+        const arrowhead = this.createArrowhead(startPos, endPos, offsetAngle, null);
+        group.appendChild(arrowhead);
+      }
     } else {
       const dis = Math.sqrt((endPos.x - startPos.x) ** 2 + (endPos.y - startPos.y) ** 2);
       const radius = Math.abs(dis / 2 / Math.sin(offsetAngle));
@@ -81,7 +98,6 @@ export class Edge {
       const centerAngle = startAngle - Math.PI / 2 * Math.sign(offsetAngle);
       const centerX = startPos.x + radius * Math.cos(centerAngle);
       const centerY = startPos.y + radius * Math.sin(centerAngle);
-      console.log(centerAngle, centerX, centerY)
 
       // Calculate the shrunk end position
       const shrinkAngle = (this.config.directed || this.defaultConfig.directed) ? 4.9 / radius : 0;
@@ -99,14 +115,14 @@ export class Edge {
       path.setAttribute("stroke", this.config.strokeColor || this.defaultConfig.strokeColor);
       path.setAttribute("stroke-width", ((this.config.strokeWidth || this.defaultConfig.strokeWidth) + (selected ? 2 : 0)).toString());
       path.setAttribute("stroke-dasharray", this.config.strokeStyle === 'dashed' ? "5,5" : "");
-      
+
       group.appendChild(path);
-    }
 
-
-    if (this.config.directed || this.defaultConfig.directed) {
-      const arrowhead = this.createArrowhead(startPos, endPos, offsetAngle);
-      group.appendChild(arrowhead);
+      
+      if (this.config.directed || this.defaultConfig.directed) {
+        const arrowhead = this.createArrowhead(startPos, endPos, offsetAngle, radius);
+        group.appendChild(arrowhead);
+      }
     }
 
     if (this.config.labelText || this.defaultConfig.labelText) {
@@ -117,9 +133,11 @@ export class Edge {
     return group;
   }
 
-  createArrowhead(start: XY, end: XY, offsetAngle: number): SVGElement {
-    const angle = Math.atan2(end.y - start.y, end.x - start.x) - offsetAngle;
+  createArrowhead(start: XY, end: XY, offsetAngle: number, radius: number | null): SVGElement {
     const arrowSize = 10;
+    const arrowLength = arrowSize / 2 * Math.sqrt(3);
+    const deltaAngle = radius ? (Math.asin(arrowLength / 2 / radius) || 0) : 0;
+    const angle = Math.atan2(end.y - start.y, end.x - start.x) - offsetAngle + deltaAngle * Math.sign(offsetAngle);
 
     const x1 = end.x - arrowSize * Math.cos(angle - Math.PI / 6);
     const y1 = end.y - arrowSize * Math.sin(angle - Math.PI / 6);
@@ -143,8 +161,8 @@ export class Edge {
     const dis = Math.sqrt(delta.x ** 2 + delta.y ** 2);
     const offset = (
       offsetAngle == 0 ?
-       0 :
-       dis / 2 / Math.sin(offsetAngle) * (1 - Math.cos(offsetAngle))
+        0 :
+        dis / 2 / Math.sin(offsetAngle) * (1 - Math.cos(offsetAngle))
     );
     const offsetDir = { x: -delta.y, y: delta.x };
     const offsetDirNormalized = { x: offsetDir.x / dis, y: offsetDir.y / dis };

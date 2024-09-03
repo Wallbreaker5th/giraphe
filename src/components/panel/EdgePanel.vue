@@ -25,7 +25,7 @@
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('panel.offsetAngle')">
-        <el-input-number v-model="localEdge.config.offsetAngle" :min="-175" :max="175" :step="5" @change="emitUpdate"
+        <el-input-number v-model="localEdge.config.offsetAngle" :min="-180" :max="180" :step="5" @change="emitUpdate"
           :placeholder="defaultConfig.offsetAngle.toString()" />
       </el-form-item>
       <el-form-item :label="$t('panel.curve')">
